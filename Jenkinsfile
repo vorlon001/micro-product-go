@@ -1,6 +1,6 @@
 pipeline {
 
-    agent any
+    agent {label 'test'}
 
     tools {
         go '1.20.5'
@@ -37,7 +37,7 @@ pipeline {
             }
         }
         stage('Docker Push') {
-            agent any
+            agent {label 'test'}
             environment {
                 HARBOR = credentials('HARBORAUTH')
                 REGESTRY  = credentials('harboriblog')
