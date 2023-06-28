@@ -25,19 +25,27 @@ pipeline {
             }
         }
         stage("build") {
+            environment {
+                HARBOR = credentials('HARBORAUTH')
+                REGESTRY  = credentials('harboriblog')
+            }
             steps {
                 echo 'BUILD EXECUTION STARTED'
                 sh 'go version'
                 sh 'go get ./...'
-                sh 'docker build . -t shadowshotx/product-go-micro'
+                sh 'docker build . -t $REGESTRY/test/product-go-micro'
             }
         }
         stage('Docker Push') {
             agent any
+            environment {
+                HARBOR = credentials('HARBORAUTH')
+                REGESTRY  = credentials('harboriblog')
+            }
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
-                sh "docker login -u ${env.dockerhubUser} -p ${env.dockerhubPassword}"
-                sh 'docker push shadowshotx/product-go-micro'
+                withCredentials([usernamePassword(credentialsId: 'HARBORAUTH', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
+                sh 'docker login $REGESTRY --username=$HARBOR_USR --password=$HARBOR_PSW'
+                sh 'docker push $REGESTRY/test/product-go-micro'
                 }
             }
         }
