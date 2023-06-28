@@ -37,7 +37,7 @@ pipeline {
             }
         }
         stage('Docker Push') {
-            agent any
+            agent test
             environment {
                 HARBOR = credentials('HARBORAUTH')
                 REGESTRY  = credentials('harboriblog')
