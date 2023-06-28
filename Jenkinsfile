@@ -44,6 +44,11 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'HARBORAUTH', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
+                sh '''
+                ifconfig
+                df -h
+                hostname
+                '''
                 sh 'docker login $REGESTRY --username=$HARBOR_USR --password=$HARBOR_PSW'
                 sh 'docker push $REGESTRY/test/product-go-micro'
                 }
