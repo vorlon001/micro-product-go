@@ -45,7 +45,6 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'HARBORAUTH', passwordVariable: 'dockerhubPassword', usernameVariable: 'dockerhubUser')]) {
                 sh '''
-                ifconfig
                 df -h
                 hostname
                 '''
